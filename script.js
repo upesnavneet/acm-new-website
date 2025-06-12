@@ -819,45 +819,67 @@ lazyVideos.forEach(video => {
   observer.observe(video);
 });
 
+const committeeNames = [
+  "Technical Committee",
+  "Events Committee",
+  "Public Relations (PR) Committee"
+];
+
 const canvas = document.getElementById("committeeCanvas");
 const ctx = canvas.getContext("2d");
-let zoom = 1;
 
-function draw(zoom) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save();
-  ctx.scale(zoom, zoom);
-  ctx.fillStyle = "white";
-  ctx.font = "30px Orbitron";
-  ctx.fillText("Entering Committee Space...", 50, 100);
-  ctx.restore();
+function resizeCommitteeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCommitteeCanvas();
+window.addEventListener('resize', resizeCommitteeCanvas);
+
+// Helper to get scroll progress in committees section (0...1)
+function getCommitteeScrollProgress() {
+  const section = document.querySelector('.committees-section');
+  const rect = section.getBoundingClientRect();
+  const totalHeight = rect.height - window.innerHeight;
+  const scrolled = -rect.top;
+  return Math.min(Math.max(scrolled / totalHeight, 0), 1);
 }
 
-gsap.to({ z: 1 }, {
-  z: 2,
-  scrollTrigger: {
-    trigger: ".committees-section",
-    start: "top top",
-    end: "bottom bottom",
-    scrub: true
-  },
-  onUpdate(self) {
-    zoom = self.targets()[0].z;
-    draw(zoom);
-  }
-});
+function drawCommittees(progress) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-gsap.utils.toArray(".committee-panel").forEach((panel, i) => {
-  gsap.to(panel, {
-    scrollTrigger: {
-      trigger: ".committees-section",
-      start: `${i * 100 + 10}% center`,
-      end: `${(i + 1) * 100}% center`,
-      scrub: true,
-    },
-    opacity: 1,
-    y: 0, // animate back to natural position
-    duration: 1,
-    ease: "power2.out"
-  });
-});
+  // Per-committee logic for vertical positioning
+  const perCommittee = 1 / committeeNames.length;
+
+  for (let i = 0; i < committeeNames.length; i++) {
+    // Calculate the center position for each committee
+    const start = i * perCommittee;
+    const end = (i + 1) * perCommittee;
+    const relProgress = (progress - start) / perCommittee;
+
+    // Only draw if within visible range
+    if (relProgress > -0.25 && relProgress < 1.25) {
+      // Center committee text vertically, but let it move with scroll
+      const centerY = canvas.height / 2 + (relProgress - 0.5) * canvas.height * 0.8;
+      ctx.save();
+      // Fade in/out effect
+      let opacity = 1 - Math.abs(relProgress - 0.5) * 2;
+      opacity = Math.max(0, opacity);
+      ctx.globalAlpha = opacity;
+
+      ctx.font = "bold 48px Orbitron, Arial, sans-serif";
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.shadowColor = 'rgba(0,0,0,0.6)';
+      ctx.shadowBlur = 18;
+      ctx.fillText(committeeNames[i], canvas.width / 2, centerY);
+      ctx.restore();
+    }
+  }
+}
+
+function animateCommittees() {
+  const progress = getCommitteeScrollProgress();
+  drawCommittees(progress);
+  requestAnimationFrame(animateCommittees);
+}
+animateCommittees();
