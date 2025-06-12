@@ -21,8 +21,7 @@ class WaterCursor {
         this.animate();
         this.updateTimestamp();
         
-        // Hide default cursor
-        document.body.style.cursor = 'none';
+
     }
     
     setupCanvas() {
@@ -746,10 +745,6 @@ document.addEventListener('DOMContentLoaded', () => {
     new EnhancedAnimations();
 });
 
-// Handle window resize
-// Glitch text effect on scroll
-const glitchElements = document.querySelectorAll('.glitch-text');
-
 function isVisible(el) {
   const rect = el.getBoundingClientRect();
   return rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
@@ -780,19 +775,7 @@ window.addEventListener('scroll', () => {
   lastScrollY = currentScroll;
 });
 
-const customCursor = document.getElementById("cursor");
-const navLinks = document.querySelectorAll(".navigation, .nav-links a");
 
-navLinks.forEach(link => {
-  link.addEventListener("mouseenter", () => {
-    customCursor.style.display = "none"; // hide custom cursor
-    document.body.style.cursor = "default"; // show system cursor
-  });
-  link.addEventListener("mouseleave", () => {
-    customCursor.style.display = "block"; // show custom cursor again
-    document.body.style.cursor = "none";  // hide system cursor
-  });
-});
 
 const lazyVideos = document.querySelectorAll("video");
 
@@ -830,7 +813,6 @@ const committeeNames = [
 const committeeCanvas = document.getElementById("committeeCanvas");
 const committeeCtx = committeeCanvas.getContext("2d");
 
-// Resize the committee canvas to always fill the screen
 function resizeCommitteeCanvas() {
   committeeCanvas.width = window.innerWidth;
   committeeCanvas.height = window.innerHeight;
@@ -838,7 +820,7 @@ function resizeCommitteeCanvas() {
 resizeCommitteeCanvas();
 window.addEventListener('resize', resizeCommitteeCanvas);
 
-// Get scroll progress in the committees-section (0...1)
+// Helper: get scroll progress inside committees-section (0...1)
 function getCommitteeScrollProgress() {
   const section = document.querySelector('.committees-section');
   const rect = section.getBoundingClientRect();
@@ -847,7 +829,6 @@ function getCommitteeScrollProgress() {
   return Math.min(Math.max(scrolled / totalHeight, 0), 1);
 }
 
-// Draw the committee names, animating based on scroll
 function drawCommittees(progress) {
   committeeCtx.clearRect(0, 0, committeeCanvas.width, committeeCanvas.height);
 
@@ -857,6 +838,8 @@ function drawCommittees(progress) {
     const start = i * perCommittee;
     const end = (i + 1) * perCommittee;
     const relProgress = (progress - start) / perCommittee;
+
+    // Only draw if in visible range
     if (relProgress > -0.25 && relProgress < 1.25) {
       // Animate Y position and fade
       const centerY = committeeCanvas.height / 2 + (relProgress - 0.5) * committeeCanvas.height * 0.8;
@@ -864,6 +847,7 @@ function drawCommittees(progress) {
       let opacity = 1 - Math.abs(relProgress - 0.5) * 2;
       opacity = Math.max(0, opacity);
       committeeCtx.globalAlpha = opacity;
+
       committeeCtx.font = "bold 48px Orbitron, Arial, sans-serif";
       committeeCtx.fillStyle = "white";
       committeeCtx.textAlign = "center";
@@ -875,8 +859,8 @@ function drawCommittees(progress) {
   }
 }
 
-// Animation loop for committees section
 function animateCommittees() {
+  // Only animate when committees-section is at least partially on screen
   const section = document.querySelector('.committees-section');
   const rect = section.getBoundingClientRect();
   if (rect.bottom > 0 && rect.top < window.innerHeight) {
@@ -888,3 +872,36 @@ function animateCommittees() {
   requestAnimationFrame(animateCommittees);
 }
 animateCommittees();
+
+document.addEventListener('click', function(e) {
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple';
+    ripple.style.left = (e.clientX - 200) + 'px';
+    ripple.style.top = (e.clientY - 200) + 'px';
+    document.body.appendChild(ripple);
+    setTimeout(() => {
+        if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+    }, 3000);
+});
+
+function typewriterGlitch(selector, text, delay = 80) {
+  const h2 = document.querySelector(selector);
+  if (!h2) return;
+  h2.innerHTML = '';
+  for (let i = 0; i < text.length; i++) {
+    const span = document.createElement('span');
+    span.textContent = text[i];
+    span.className = 'glitch-letter';
+    span.style.animationDelay = (i * delay * 0.7 + Math.random() * 40) + "ms";
+    h2.appendChild(span);
+  }
+}
+
+// Usage: for your glitch-text h2 in .video-section
+document.addEventListener('DOMContentLoaded', function() {
+  const glitchH2 = document.querySelector('.video-section .glitch-text');
+  if (glitchH2) {
+    const displayText = glitchH2.getAttribute('data-text') || glitchH2.textContent;
+    typewriterGlitch('.video-section .glitch-text', displayText, 110);
+  }
+});
