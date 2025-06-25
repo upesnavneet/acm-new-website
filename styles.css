@@ -125,10 +125,10 @@ spline-viewer {
   font-family: 'Oxanium';
   color: white;
   text-align: center;
-  font-size: xx-large;
   position: static;
   z-index: 5; /* ensures it's on top of spline-viewer */
 }
+
 
 
 .glow-text {
@@ -137,7 +137,7 @@ spline-viewer {
   cursor: default;
 }
 
-.glow-text:hover {
+.glow-text {
   color: #0606bb;
   text-shadow:
     0 0 5px #040f93,
@@ -153,3 +153,10 @@ spline-viewer {
 }
 
 
+.names p:first-child {
+  font-size: small;
+}
+
+.names p:nth-child(2) {
+  font-size: xx-large;
+}
