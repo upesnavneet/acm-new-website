@@ -154,9 +154,82 @@ spline-viewer {
 
 
 .names p:first-child {
-  font-size: small;
+  font-size: medium;
 }
 
 .names p:nth-child(2) {
   font-size: xx-large;
 }
+
+.names p:nth-child(3) {
+  font-size: small;
+}
+
+
+.committee-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Floating text */
+.committee {
+  font-family: 'Georama';
+  position: absolute;
+  color: #fff;
+  font-size: medium;
+  font-weight: 600;
+  text-shadow: 0 0 10px #940bea;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  animation: float 3s ease-in-out infinite;
+}
+
+.committee:hover{
+  color: #0606bb;
+  text-shadow: #0606bb;
+}
+/* Float animation */
+@keyframes float {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Glowing tooltip on hover */
+.committee:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  white-space: normal;
+  width: 280px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  z-index: 10;
+  box-shadow: 0 0 10px #940bea;
+}
+
+/* Tooltip side direction */
+.float-left:hover::after { left: 120%; }
+.float-right:hover::after { right: 120%; }
+
+/* Custom positions — closer to robot */
+.float-left:nth-child(1) { top: 25%; left: 18%; }
+.float-left:nth-child(2) { top: 45%; left: 8%; }
+.float-left:nth-child(3) { top: 65%; left: 20%; }
+
+.float-right:nth-child(4) { top: 27%; right: 18%; }
+.float-right:nth-child(5) { top: 47%; right: 9%; }
+.float-right:nth-child(6) { top: 63%; right: 8%; }
+.float-right:nth-child(7) { top: 80%; right: 10%; }
+
+
