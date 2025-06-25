@@ -3,15 +3,28 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Orbitron', sans-serif;
 }
 
 /* Fullscreen Spline Background */
 html, body {
-  width: 100%;
+  margin: 0;
+  padding: 0;
   height: 100%;
-  overflow: hidden;
+  scroll-behavior: smooth;
 }
+
+section {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+html {
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+}
+
 
 .home {
   width: 100vw;
@@ -23,6 +36,7 @@ spline-viewer {
   width: 100%;
   height: 100%;
   display: block;
+  pointer-events: none;
 }
 
 /* Navbar Styling */
@@ -45,13 +59,12 @@ spline-viewer {
   align-items: center;
   height: 40px;
 }
+
 .logo img {
-  height: 40px;
+  height: 70px; 
   width: auto;
   object-fit: contain;
-  padding: 5%;
 }
-
 
 .nav-links {
   list-style: none;
@@ -59,7 +72,9 @@ spline-viewer {
   gap: 30px;
 }
 
+
 .nav-links li a {
+  font-family:  'Orbitron', sans-serif;;
   text-decoration: none;
   color: #ffffff;
   font-weight: 500;
@@ -73,3 +88,68 @@ spline-viewer {
 .navbar * {
   margin: 0;
 }
+
+.navbar{
+   padding: 30px 30px;
+}
+
+
+.committes {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  overflow: visible;;
+}
+
+.committees-layout {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.robot-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 0; /* behind the glowing text */
+}
+
+.robot-viewer spline-viewer {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.names p {
+  font-family: 'Oxanium';
+  color: white;
+  text-align: center;
+  font-size: xx-large;
+  position: static;
+  z-index: 5; /* ensures it's on top of spline-viewer */
+}
+
+
+.glow-text {
+  color: white;
+  transition: all 0.3s ease-in-out;
+  cursor: default;
+}
+
+.glow-text:hover {
+  color: #0606bb;
+  text-shadow:
+    0 0 5px #040f93,
+    0 0 10px #051e8e,
+    0 0 20px #02028c;
+}
+
+
+.names {
+  position: relative;
+  z-index: 5;
+  padding-top: 40px;
+}
+
+
