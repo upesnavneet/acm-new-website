@@ -11,6 +11,7 @@ html, body {
   padding: 0;
   height: 100%;
   scroll-behavior: smooth;
+  background-color: #000; /* Ensures base background is black */
 }
 
 section {
@@ -176,7 +177,7 @@ spline-viewer {
 
 /* Floating text */
 .committee {
-  font-family: 'Oxanium', sans-serif;
+  font-family: 'Nunito sans', sans-serif;
   position: absolute;
   color: #ffffff;
   font-size: 1rem;
@@ -418,7 +419,7 @@ spline-viewer {
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.6; /* Adjust to your preference */
+  opacity: 1;
 }
 
 .video-overlay {
@@ -432,14 +433,145 @@ spline-viewer {
   pointer-events: none;
 }
 
-.about-content {
+.initiatives-section {
   position: relative;
-  z-index: 2;
+  height: auto;
+  padding: 80px 20px;
+  overflow: hidden;
+  color: #ffffff;
 }
 
-.floating-elements {
+/* Spline background */
+.spline-bg {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.spline-bg spline-viewer {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.spline-bg .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0); /* dim overlay for contrast */
+  opacity: 1;
+}
+
+/* Foreground content */
+.initiatives-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.initiatives-subtitle {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 0.9rem;
+  color: #aaa;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.initiatives-heading {
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+.initiatives-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.initiative-card {
+  background-color: rgba(10, 10, 10, 0.64);
+  border-radius: 12px;
+  max-width: 320px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.658);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.initiative-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 20px rgba(52, 6, 236, 0.841);
+}
+
+.initiative-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.initiative-card h3 {
+  font-family: 'Georama', sans-serif;
+  font-size: 1.2rem;
+  color: #0f0bea;
+  margin-bottom: 10px;
+}
+
+.initiative-card p {
+  font-size: 0.95rem;
+  color: #ddd;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.initiatives-section {
+  position: relative;
+  height: 100vh; /* full viewport height */
+  overflow: hidden;
+  color: #ffffff;
+}
+
+.initiatives-section .spline-bg spline-viewer {
+  pointer-events: all;
+}
+
+.initiatives-content,
+.overlay {
+  pointer-events: none;
+}
+
+.initiatives-container,
+.initiative-card {
+  pointer-events: auto;
+}
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 2s ease-out, transform 4s ease-out;
+  will-change: opacity, transform;
+  visibility: hidden;
+}
+
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
 }
